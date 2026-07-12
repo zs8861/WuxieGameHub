@@ -258,12 +258,26 @@ img {
   background:
     linear-gradient(180deg, rgba(120, 242, 207, 0.12), rgba(255, 184, 77, 0.06)),
     #0f0d0b;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .author-avatar {
   width: 100%;
   border-radius: 18px;
   animation: floaty 5.4s ease-in-out infinite;
+}
+
+.author-avatar-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.author-avatar-link:hover .author-avatar-frame,
+.author-avatar-link:focus-visible .author-avatar-frame {
+  transform: translateY(-2px);
+  border-color: rgba(255, 216, 133, 0.42);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
 .author-meta {
@@ -279,7 +293,20 @@ img {
 
 .author-meta h2 {
   line-height: 1.05;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-size: clamp(1.45rem, 2.2vw, 1.95rem);
+  white-space: nowrap;
+}
+
+.author-name-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 160ms ease, text-shadow 160ms ease;
+}
+
+.author-name-link:hover,
+.author-name-link:focus-visible {
+  color: #ffd97a;
+  text-shadow: 0 2px 12px rgba(255, 184, 77, 0.22);
 }
 
 .load-fallback {
@@ -458,13 +485,7 @@ img {
 }
 
 .game-card__cover::before {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 35%),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.08) 0 2px,
-      transparent 2px 20px
-    );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 35%);
   opacity: 0.35;
 }
 
