@@ -34,7 +34,7 @@
 
   try {
     const incomingGames = Array.isArray(window.WUXIE_GAMES) ? window.WUXIE_GAMES.slice() : [];
-    state.games = incomingGames;
+    state.games = sortGamesByReleaseDate(incomingGames);
     initialize();
   } catch (error) {
     handleFatalError(error);
@@ -212,14 +212,14 @@
       renderCover(game),
       '<div class="game-card__body">',
       '<div class="game-card__heading">',
-      '<div class="game-card__title-group">',
+      '<div class="game-card__heading-top">',
       '<h3 class="game-card__title">' + escapeHtml(game.title) + "</h3>",
+      '<span class="' + statusClass + '">' + escapeHtml(game.statusText || statusMap[game.status] || "未知状态") + "</span>",
+      "</div>",
       '<div class="card-meta">',
       '<span class="meta-pill">' + escapeHtml(game.type) + "</span>",
       '<span class="meta-pill">上线 ' + escapeHtml(game.releasedAt || "待定") + "</span>",
       "</div>",
-      "</div>",
-      '<span class="' + statusClass + '">' + escapeHtml(game.statusText || statusMap[game.status] || "未知状态") + "</span>",
       "</div>",
       "<p>" + escapeHtml(game.description || "暂无简介") + "</p>",
       '<div class="tag-row">' + renderTags(game.tags) + "</div>",
@@ -363,6 +363,41 @@
     return state.games.filter(function (game) {
       return game.status === "playable" && Boolean(game.toyUrl);
     });
+  }
+
+  function sortGamesByReleaseDate(games) {
+    return games
+      .map(function (game, index) {
+        return {
+          game: game,
+          index: index,
+          timestamp: getReleaseTimestamp(game.releasedAt)
+        };
+      })
+      .sort(function (left, right) {
+        if (right.timestamp !== left.timestamp) {
+          return right.timestamp - left.timestamp;
+        }
+
+        return left.index - right.index;
+      })
+      .map(function (entry) {
+        return entry.game;
+      });
+  }
+
+  function getReleaseTimestamp(value) {
+    if (!value) {
+      return Number.NEGATIVE_INFINITY;
+    }
+
+    const matched = String(value).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+    if (!matched) {
+      return Number.NEGATIVE_INFINITY;
+    }
+
+    return Date.UTC(Number(matched[1]), Number(matched[2]) - 1, Number(matched[3]));
   }
 
   function getFilteredGames() {
