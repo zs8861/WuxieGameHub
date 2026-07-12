@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="无邪 Game Hub：秦无邪OvO 的独立游戏聚合页，集中展示已上线试玩作品。">
+  <meta name="theme-color" content="#1b1a17">
+  <title>无邪 Game Hub</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+  <div class="page-grid" aria-hidden="true"></div>
+
+  <main class="page-shell">
+    <header class="hero panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Qin Wuxie Dev Desk</p>
+        <h1>无邪 Game Hub</h1>
+        <p class="hero-lead">
+          秦无邪OvO 的作品收纳台。这里集中展示已经上线的试玩项目，也会逐步接入新的实验坑位、小游戏原型和作者工作台日志。
+        </p>
+        <div class="hero-actions">
+          <button class="action-button action-button--primary" type="button" id="random-play-button">
+            随便玩一个
+          </button>
+          <button class="action-button action-button--ghost" type="button" data-scroll-target="games-section">
+            查看全部作品
+          </button>
+        </div>
+        <div class="hero-inline-stats" id="hero-inline-stats" aria-live="polite">
+          <span>加载作品目录中...</span>
+        </div>
+      </div>
+
+      <aside class="author-card">
+        <div class="author-avatar-frame">
+          <img src="./assets/avatar.svg" alt="秦无邪OvO 头像" class="author-avatar">
+        </div>
+        <div class="author-meta">
+          <p class="author-label">作者</p>
+          <h2>秦无邪OvO</h2>
+          <p>
+            偏爱像素味、梗感和高互动反馈的独立游戏创作者。作品方向覆盖跑酷、平台跳跃、文字互动和轻量模拟。
+          </p>
+        </div>
+      </aside>
+    </header>
+
+    <section class="load-fallback panel" id="load-fallback" aria-live="polite">
+      <strong>页面已经点亮。</strong>
+      <span>如果游戏目录加载失败，这里会保留基础信息，不会出现白屏。你可以刷新页面，或稍后再试。</span>
+    </section>
+
+    <div class="layout-grid">
+      <aside class="status-panel panel" id="player-status">
+        <div class="panel-heading">
+          <p class="panel-kicker">Player Status</p>
+          <h2>玩家状态台</h2>
+        </div>
+        <div class="status-counters" id="status-counters">
+          <article class="status-chip">
+            <span class="status-chip__label">已收录</span>
+            <strong>0</strong>
+          </article>
+          <article class="status-chip">
+            <span class="status-chip__label">可试玩</span>
+            <strong>0</strong>
+          </article>
+          <article class="status-chip">
+            <span class="status-chip__label">开发中</span>
+            <strong>0</strong>
+          </article>
+        </div>
+
+        <section class="status-block">
+          <div class="status-block__head">
+            <h3>最近游玩</h3>
+            <span id="recent-play-count">0 条记录</span>
+          </div>
+          <ul class="status-list" id="recent-play-list">
+            <li>还没有游玩记录，先点一款试试。</li>
+          </ul>
+        </section>
+
+        <section class="status-block">
+          <div class="status-block__head">
+            <h3>高频点击</h3>
+            <span id="top-click-summary">等待统计</span>
+          </div>
+          <div class="status-highlight" id="top-click-highlight">
+            点击任意卡片后，这里会记录你的偏好。
+          </div>
+        </section>
+      </aside>
+
+      <section class="games-panel panel" id="games-section">
+        <div class="panel-heading panel-heading--space">
+          <div>
+            <p class="panel-kicker">Workbench Shelf</p>
+            <h2>全部游戏</h2>
+          </div>
+          <p class="panel-note">按类型筛选，或直接随机进入一款已上线作品。</p>
+        </div>
+
+        <div class="filter-row" id="filter-row" aria-label="游戏类型筛选">
+          <button class="filter-chip is-active" type="button" data-filter="all">全部</button>
+        </div>
+
+        <div class="games-grid" id="games-grid" aria-live="polite">
+          <article class="game-card game-card--placeholder">
+            <div class="game-card__cover cover-shell">
+              <span class="cover-shell__label">Loading</span>
+            </div>
+            <div class="game-card__body">
+              <h3>正在读取游戏仓库...</h3>
+              <p>如果脚本未加载成功，页面会显示友好的错误提示，而不是空白页。</p>
+            </div>
+          </article>
+        </div>
+
+        <section class="empty-state" id="empty-state" hidden>
+          <div class="empty-state__badge">EMPTY SLOT</div>
+          <h3>这个分类暂时没有可展示的游戏</h3>
+          <p>可以切回“全部”，或者之后再来看看新的项目是否已经接入。</p>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <noscript>
+    <section class="noscript-banner">
+      页面脚本未启用。你仍然可以看到基础介绍，但游戏目录与筛选功能需要启用 JavaScript。
+    </section>
+  </noscript>
+
+  <pre id="runtime-diagnostics" hidden aria-hidden="true"></pre>
+
+  <script>
+    (function () {
+      var runtime = {
+        ready: false,
+        errors: [],
+        resourceErrors: [],
+        selfTest: null,
+        lastUpdated: null
+      };
+
+      function syncDiagnostics() {
+        runtime.lastUpdated = new Date().toISOString();
+        var node = document.getElementById("runtime-diagnostics");
+        if (node) {
+          node.textContent = JSON.stringify(runtime);
+        }
+      }
+
+      window.__WUXIE_RUNTIME__ = runtime;
+      window.__WUXIE_SYNC_DIAGNOSTICS__ = syncDiagnostics;
+
+      window.addEventListener(
+        "error",
+        function (event) {
+          if (event.target && event.target !== window) {
+            runtime.resourceErrors.push({
+              tag: event.target.tagName || "UNKNOWN",
+              source: event.target.currentSrc || event.target.src || event.target.href || ""
+            });
+          } else {
+            runtime.errors.push({
+              message: event.message || "Unknown runtime error",
+              source: event.filename || "",
+              lineno: event.lineno || 0,
+              colno: event.colno || 0
+            });
+          }
+
+          syncDiagnostics();
+        },
+        true
+      );
+
+      window.addEventListener("unhandledrejection", function (event) {
+        runtime.errors.push({
+          message: event.reason && event.reason.message ? event.reason.message : String(event.reason || "Unhandled rejection")
+        });
+        syncDiagnostics();
+      });
+
+      document.addEventListener("DOMContentLoaded", syncDiagnostics);
+    })();
+  </script>
+
+  <script src="./js/games.js" defer></script>
+  <script src="./js/app.js" defer></script>
+</body>
+</html>

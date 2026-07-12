@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="avatarTitle avatarDesc">
+  <title id="avatarTitle">秦无邪OvO 开发者头像</title>
+  <desc id="avatarDesc">像素风开发工作台头像插画</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a2119" />
+      <stop offset="100%" stop-color="#100d0b" />
+    </linearGradient>
+    <linearGradient id="screen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7af2d0" />
+      <stop offset="100%" stop-color="#ffbe63" />
+    </linearGradient>
+  </defs>
+
+  <rect width="320" height="320" rx="34" fill="url(#bg)" />
+  <rect x="22" y="22" width="276" height="276" rx="28" fill="none" stroke="#4a3a2a" stroke-width="4" />
+
+  <rect x="72" y="64" width="176" height="130" rx="16" fill="#18120f" stroke="#f7d08a" stroke-width="4" />
+  <rect x="86" y="78" width="148" height="102" rx="10" fill="url(#screen)" opacity="0.94" />
+  <path d="M108 111h28v24h-28zm76 0h28v24h-28zm-48 42h48v8h-48z" fill="#19140f" />
+  <rect x="124" y="196" width="72" height="20" rx="8" fill="#f7d08a" opacity="0.92" />
+  <rect x="101" y="216" width="118" height="14" rx="7" fill="#4a3a2a" />
+
+  <path d="M58 238h204l16 36H42z" fill="#241b14" stroke="#4a3a2a" stroke-width="4" />
+  <rect x="90" y="246" width="72" height="18" rx="6" fill="#ffbe63" opacity="0.9" />
+  <rect x="170" y="246" width="60" height="18" rx="6" fill="#7af2d0" opacity="0.84" />
+
+  <circle cx="246" cy="76" r="18" fill="#ff7f50" opacity="0.9" />
+  <path d="M240 76h12M246 70v12" stroke="#fff4d8" stroke-linecap="round" stroke-width="3" />
+
+  <text x="58" y="52" fill="#7af2d0" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="18" letter-spacing="2">QIN WUXIE</text>
+  <text x="208" y="286" fill="#f7d08a" font-family="Trebuchet MS, Segoe UI, sans-serif" font-size="20" text-anchor="end">OvO</text>
+</svg>
