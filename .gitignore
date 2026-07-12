@@ -1,17 +1,35 @@
-# Godot 4+ specific ignores
-.godot/
-.nomedia
+# Dependencies
+node_modules/
 
-# Godot-specific ignores
-.import/
-export.cfg
-export_credentials.cfg
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Framework and bundler caches
+.cache/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+.turbo/
+
+# Test coverage
+coverage/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Temporary files
 *.tmp
+*.temp
 
-# Imported translations (automatically generated from CSV files)
-*.translation
-
-# Mono-specific ignores
-.mono/
-data_*/
-mono_crash.*.json
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
