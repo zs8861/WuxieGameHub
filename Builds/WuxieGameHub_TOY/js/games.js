@@ -56,7 +56,7 @@ window.WUXIE_GAMES = [
   {
     id: "9050385336320",
     title: "面面俱道",
-    type: "休闲益智",
+    type: "模拟经营",
     status: "playable",
     statusText: "已上线",
     releasedAt: "2026-07-08",
@@ -164,7 +164,7 @@ window.WUXIE_GAMES = [
   {
     id: "9497691081728",
     title: "流浪地球模拟器",
-    type: "模拟游戏",
+    type: "模拟经营",
     status: "playable",
     statusText: "已上线",
     releasedAt: "2026-07-02",
@@ -213,6 +213,60 @@ window.WUXIE_GAMES = [
       primary: "#ff8a65",
       secondary: "#ffca28",
       glow: "rgba(255, 138, 101, 0.34)"
+    }
+  },
+  {
+    id: "10507037757440",
+    title: "是男人就下100万层",
+    type: "动作平台",
+    status: "playable",
+    statusText: "已上线",
+    releasedAt: "2026-06-30",
+    toyUrl: "https://www.bilibili.com/toy/ManDown100Wan/index.html",
+    videoUrl: "https://www.bilibili.com/video/BV1db4y187AD/",
+    coverImage: "assets/是男人就下100万层.png",
+    description: "一路向下闯关的快节奏平台玩法，考验反应、落点判断和连续操作稳定性。",
+    tags: ["下坠闯关", "平台", "反应"],
+    palette: {
+      primary: "#64b5f6",
+      secondary: "#4db6ac",
+      glow: "rgba(100, 181, 246, 0.34)"
+    }
+  },
+  {
+    id: "10474892610560",
+    title: "黄金矿工3D版",
+    type: "休闲益智",
+    status: "playable",
+    statusText: "已上线",
+    releasedAt: "2026-06-29",
+    toyUrl: "https://www.bilibili.com/toy/GoldMiner3D/index.html",
+    videoUrl: "https://www.bilibili.com/video/BV1yF411Y71Z/",
+    coverImage: "assets/黄金矿工3D版.png",
+    description: "经典黄金矿工的3D版本，主打时机把控和目标取舍，适合短局反复游玩。",
+    tags: ["3D", "抓取", "休闲"],
+    palette: {
+      primary: "#ffb300",
+      secondary: "#ff7043",
+      glow: "rgba(255, 179, 0, 0.34)"
+    }
+  },
+  {
+    id: "10598024794112",
+    title: "拯救凯特琳",
+    type: "动作平台",
+    status: "playable",
+    statusText: "已上线",
+    releasedAt: "2026-06-28",
+    toyUrl: "https://www.bilibili.com/toy/JinxAndVi/index.html",
+    videoUrl: "https://www.bilibili.com/video/BV1bD4y1c7U6/",
+    coverImage: "assets/拯救凯特琳.jpg",
+    description: "双城之战二创游戏，围绕闯关与救援目标展开的动作平台玩法。",
+    tags: ["动作", "平台", "闯关"],
+    palette: {
+      primary: "#42a5f5",
+      secondary: "#7e57c2",
+      glow: "rgba(66, 165, 245, 0.34)"
     }
   }
 ];

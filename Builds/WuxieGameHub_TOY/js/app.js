@@ -178,7 +178,7 @@
 
         incrementClick(id);
         rememberRecentPlay(id);
-        openExternalLink(game.toyUrl);
+        openGameLink(game.toyUrl);
         renderStatusPanel();
         renderGames();
         syncDiagnostics();
@@ -362,7 +362,7 @@
     const selected = playableGames[Math.floor(Math.random() * playableGames.length)];
     incrementClick(selected.id);
     rememberRecentPlay(selected.id);
-    openExternalLink(selected.toyUrl);
+    openGameLink(selected.toyUrl);
     renderStatusPanel();
     renderGames();
     syncDiagnostics();
@@ -517,6 +517,84 @@
 
     state.recent = nextRecent;
     writeStorage(STORAGE_KEYS.recent, state.recent);
+  }
+
+  async function openGameLink(url) {
+    const normalizedUrl = String(url || "").trim();
+    if (!normalizedUrl) {
+      showToast("这款游戏暂时没有可用的试玩地址。");
+      return;
+    }
+
+    const toyId = getToyIdFromUrl(normalizedUrl);
+
+    try {
+      if (
+        toyId &&
+        window.toy &&
+        typeof window.toy.isSupport === "function" &&
+        typeof window.toy.navigate === "function"
+      ) {
+        const supported = await window.toy.isSupport("navigate");
+        if (supported) {
+          await window.toy.navigate({
+            type: "toy",
+            id: toyId,
+            extra: { from: "toy" }
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    openGameLinkWithBrowser(normalizedUrl);
+  }
+
+  function getToyIdFromUrl(url) {
+    const text = String(url || "").trim();
+    if (!text) {
+      return "";
+    }
+
+    try {
+      const parsedUrl = new URL(text, window.location.href);
+      const matchedPath = parsedUrl.pathname.match(/^\/toy\/([^\/?#]+)/i);
+      if (matchedPath) {
+        return decodeURIComponent(matchedPath[1]);
+      }
+    } catch (error) {
+      // Ignore parse failure and fallback to plain-text match.
+    }
+
+    const matchedText = text.match(/\/toy\/([^\/?#]+)/i);
+    return matchedText ? decodeURIComponent(matchedText[1]) : "";
+  }
+
+  function openGameLinkWithBrowser(url) {
+    try {
+      if (isMobileDevice()) {
+        window.location.href = url;
+        return;
+      }
+
+      const nextWindow = window.open(url, "_blank", "noopener,noreferrer");
+      if (!nextWindow) {
+        showToast("浏览器拦截了新标签页，请允许弹窗后重试。");
+      }
+    } catch (error) {
+      showToast("外部页面打开失败，请稍后重试。");
+      console.error(error);
+    }
+  }
+
+  function isMobileDevice() {
+    const userAgent = String(navigator.userAgent || "").toLowerCase();
+    const isMobileUa = /android|iphone|ipad|ipod|windows phone|mobile|harmonyos/i.test(userAgent);
+    const isTouchMac = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+
+    return isMobileUa || isTouchMac;
   }
 
   function openExternalLink(url) {
