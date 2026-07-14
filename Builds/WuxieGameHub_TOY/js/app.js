@@ -59,6 +59,15 @@
       elements.randomButton.addEventListener("click", handleRandomPlay);
     }
 
+    document.querySelectorAll("[data-action='open-space']").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const mid = button.getAttribute("data-space-mid");
+        if (mid) {
+          openSpaceProfile(mid);
+        }
+      });
+    });
+
     document.querySelectorAll("[data-scroll-target]").forEach(function (button) {
       button.addEventListener("click", function () {
         const targetId = button.getAttribute("data-scroll-target");
@@ -187,7 +196,7 @@
         }
 
         incrementClick(id);
-        openExternalLink(game.videoUrl);
+        openVideoEntry(game);
         renderStatusPanel();
         renderGames();
         syncDiagnostics();
@@ -357,6 +366,81 @@
     renderStatusPanel();
     renderGames();
     syncDiagnostics();
+  }
+
+  async function openSpaceProfile(mid) {
+    const spaceMid = String(mid || "").trim();
+    if (!spaceMid) {
+      showToast("作者主页暂时不可用。");
+      return;
+    }
+
+    try {
+      if (
+        window.toy &&
+        typeof window.toy.isSupport === "function" &&
+        typeof window.toy.navigate === "function"
+      ) {
+        const supported = await window.toy.isSupport("navigate");
+        if (supported) {
+          await window.toy.navigate({
+            type: "space",
+            id: spaceMid,
+            extra: { from: "toy" }
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    openExternalLink("https://space.bilibili.com/" + encodeURIComponent(spaceMid));
+  }
+
+  async function openVideoEntry(game) {
+    const videoBvid = getVideoBvid(game);
+
+    try {
+      if (
+        videoBvid &&
+        window.toy &&
+        typeof window.toy.isSupport === "function" &&
+        typeof window.toy.navigate === "function"
+      ) {
+        const supported = await window.toy.isSupport("navigate");
+        if (supported) {
+          await window.toy.navigate({
+            type: "video",
+            id: videoBvid,
+            extra: { from: "toy" }
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (game && game.videoUrl) {
+      openExternalLink(game.videoUrl);
+      return;
+    }
+
+    showToast("这款作品还没有配置视频入口。");
+  }
+
+  function getVideoBvid(game) {
+    if (!game) {
+      return "";
+    }
+
+    if (game.videoBvid) {
+      return String(game.videoBvid).trim();
+    }
+
+    const matched = String(game.videoUrl || "").match(/\/video\/(BV[0-9A-Za-z]+)/i);
+    return matched ? matched[1] : "";
   }
 
   function getPlayableGames() {

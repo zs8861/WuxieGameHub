@@ -269,8 +269,13 @@ img {
 
 .author-avatar-link {
   display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .author-avatar-link:hover .author-avatar-frame,
@@ -298,9 +303,15 @@ img {
 }
 
 .author-name-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
   color: inherit;
   text-decoration: none;
   transition: color 160ms ease, text-shadow 160ms ease;
+  cursor: pointer;
 }
 
 .author-name-link:hover,
