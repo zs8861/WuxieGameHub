@@ -6,8 +6,34 @@
   <meta name="description" content="无邪游戏站：秦无邪OvO 的独立游戏聚合页，集中展示已上线试玩作品。">
   <meta name="theme-color" content="#1b1a17">
   <title>无邪游戏站</title>
+  <script>
+    (function () {
+      var storageKey = "wuxie-game-hub:theme";
+      var theme = "dark";
+
+      try {
+        var raw = window.localStorage.getItem(storageKey);
+        if (raw === "light" || raw === "dark") {
+          theme = raw;
+        } else if (raw) {
+          var parsed = JSON.parse(raw);
+          if (parsed === "light" || parsed === "dark") {
+            theme = parsed;
+          }
+        }
+      } catch (error) {
+        theme = "dark";
+      }
+
+      document.documentElement.setAttribute("data-theme", theme);
+      var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute("content", theme === "light" ? "#efe9dc" : "#1b1a17");
+      }
+    })();
+  </script>
   <link rel="icon" type="image/png" href="./assets/LOGO.png">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.css?v=006967a">
   <script src="//s1.hdslb.com/bfs/seed/toy/app/sdk/toy-sdk.js" defer></script>
 </head>
 <body>
@@ -220,7 +246,8 @@
     })();
   </script>
 
-  <script src="./js/games.js" defer></script>
-  <script src="./js/app.js" defer></script>
+  <script src="./js/games.js?v=006967a" defer></script>
+  <script src="./js/app.js?v=006967a" defer></script>
 </body>
 </html>
+

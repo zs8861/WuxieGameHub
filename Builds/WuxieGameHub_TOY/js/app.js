@@ -716,12 +716,30 @@
   }
 
   function resolveInitialTheme() {
-    const storedTheme = readStorage(STORAGE_KEYS.theme, "");
+    const storedTheme = readThemePreference();
     if (storedTheme === "light") {
       return "light";
     }
 
     return "dark";
+  }
+
+  function readThemePreference() {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEYS.theme);
+      if (!raw) {
+        return "";
+      }
+
+      if (raw === "light" || raw === "dark") {
+        return raw;
+      }
+
+      const parsed = JSON.parse(raw);
+      return parsed === "light" || parsed === "dark" ? parsed : "";
+    } catch (error) {
+      return "";
+    }
   }
 
   function handleThemeToggle() {
