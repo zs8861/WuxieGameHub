@@ -1,7 +1,8 @@
 (function () {
   const STORAGE_KEYS = {
     clicks: "wuxie-game-hub:clicks",
-    recent: "wuxie-game-hub:recent"
+    recent: "wuxie-game-hub:recent",
+    theme: "wuxie-game-hub:theme"
   };
 
   const MAX_RECENT = 5;
@@ -12,6 +13,7 @@
 
   const state = {
     filter: "all",
+    theme: resolveInitialTheme(),
     games: [],
     clicks: readStorage(STORAGE_KEYS.clicks, {}),
     recent: readStorage(STORAGE_KEYS.recent, []),
@@ -29,8 +31,11 @@
     recentPlayCount: document.getElementById("recent-play-count"),
     recentPlayList: document.getElementById("recent-play-list"),
     topClickSummary: document.getElementById("top-click-summary"),
-    topClickHighlight: document.getElementById("top-click-highlight")
+    topClickHighlight: document.getElementById("top-click-highlight"),
+    themeToggle: document.getElementById("theme-toggle")
   };
+
+  applyTheme(state.theme);
 
   try {
     const incomingGames = Array.isArray(window.WUXIE_GAMES) ? window.WUXIE_GAMES.slice() : [];
@@ -57,6 +62,10 @@
   function bindStaticActions() {
     if (elements.randomButton) {
       elements.randomButton.addEventListener("click", handleRandomPlay);
+    }
+
+    if (elements.themeToggle) {
+      elements.themeToggle.addEventListener("click", handleThemeToggle);
     }
 
     document.querySelectorAll("[data-action='open-space']").forEach(function (button) {
@@ -706,6 +715,62 @@
     return parts.join("-") + " " + time.join(":");
   }
 
+  function resolveInitialTheme() {
+    const storedTheme = readStorage(STORAGE_KEYS.theme, "");
+    if (storedTheme === "light") {
+      return "light";
+    }
+
+    return "dark";
+  }
+
+  function handleThemeToggle() {
+    const nextTheme = state.theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+  }
+
+  function setTheme(theme) {
+    const normalizedTheme = theme === "light" ? "light" : "dark";
+    state.theme = normalizedTheme;
+    writeStorage(STORAGE_KEYS.theme, normalizedTheme);
+    applyTheme(normalizedTheme);
+    syncDiagnostics();
+  }
+
+  function applyTheme(theme) {
+    const normalizedTheme = theme === "light" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", normalizedTheme);
+    syncThemeToggle(normalizedTheme);
+    syncThemeColorMeta(normalizedTheme);
+  }
+
+  function syncThemeToggle(theme) {
+    if (!elements.themeToggle) {
+      return;
+    }
+
+    const isLight = theme === "light";
+    const nextLabel = isLight ? "切换到暗色主题" : "切换到亮色主题";
+    const icon = elements.themeToggle.querySelector(".theme-toggle__icon");
+
+    elements.themeToggle.setAttribute("aria-pressed", String(isLight));
+    elements.themeToggle.setAttribute("aria-label", nextLabel);
+    elements.themeToggle.title = nextLabel;
+
+    if (icon) {
+      icon.textContent = isLight ? "☾" : "☀";
+    }
+  }
+
+  function syncThemeColorMeta(theme) {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+      return;
+    }
+
+    metaThemeColor.setAttribute("content", theme === "light" ? "#efe9dc" : "#1b1a17");
+  }
+
   function readStorage(key, fallback) {
     try {
       const raw = window.localStorage.getItem(key);
@@ -761,6 +826,7 @@
     runtime.playableGames = getPlayableGames().length;
     runtime.renderedGames = elements.gamesGrid ? elements.gamesGrid.querySelectorAll(".game-card").length : 0;
     runtime.activeFilter = state.filter;
+    runtime.theme = state.theme;
     runtime.emptyStateVisible = elements.emptyState ? !elements.emptyState.hidden : false;
     runtime.storage = {
       clickEntries: Object.keys(state.clicks).length,
