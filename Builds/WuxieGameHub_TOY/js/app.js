@@ -6,6 +6,7 @@
   };
 
   const MAX_RECENT = 5;
+  const BACK_TOP_THRESHOLD = 280;
   const statusMap = {
     playable: "可试玩",
     developing: "开发中"
@@ -32,7 +33,8 @@
     recentPlayList: document.getElementById("recent-play-list"),
     topClickSummary: document.getElementById("top-click-summary"),
     topClickHighlight: document.getElementById("top-click-highlight"),
-    themeToggle: document.getElementById("theme-toggle")
+    themeToggle: document.getElementById("theme-toggle"),
+    backTopButton: document.getElementById("back-top")
   };
 
   applyTheme(state.theme);
@@ -66,6 +68,13 @@
 
     if (elements.themeToggle) {
       elements.themeToggle.addEventListener("click", handleThemeToggle);
+    }
+
+    if (elements.backTopButton) {
+      elements.backTopButton.addEventListener("click", handleBackTopClick);
+      window.addEventListener("scroll", syncBackTopButton, { passive: true });
+      window.addEventListener("resize", syncBackTopButton);
+      syncBackTopButton();
     }
 
     document.querySelectorAll("[data-action='open-space']").forEach(function (button) {
@@ -212,6 +221,25 @@
       });
     });
 
+    elements.gamesGrid.querySelectorAll("[data-action='download']").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const id = button.getAttribute("data-id");
+        const game = findGame(id);
+        const downloadUrl = getDownloadUrl(game);
+
+        if (!downloadUrl) {
+          showToast("这款作品还没有配置下载链接。");
+          return;
+        }
+
+        incrementClick(id);
+        openExternalLink(downloadUrl);
+        renderStatusPanel();
+        renderGames();
+        syncDiagnostics();
+      });
+    });
+
     syncDiagnostics();
   }
 
@@ -235,6 +263,7 @@
       '<span class="' + statusClass + '">' + escapeHtml(game.statusText || statusMap[game.status] || "未知状态") + "</span>",
       "</div>",
       '<div class="card-meta">',
+      game.isPinned ? '<span class="meta-pill is-pinned">置顶</span>' : "",
       '<span class="meta-pill">' + escapeHtml(game.type) + "</span>",
       '<span class="meta-pill">上线 ' + escapeHtml(game.releasedAt || "待定") + "</span>",
       "</div>",
@@ -248,6 +277,7 @@
       '<div class="card-actions">',
       '<button class="card-button card-button--primary" type="button" data-action="play" data-id="' + escapeHtml(game.id) + '"' + buttonDisabled + ">开始游戏</button>",
       '<button class="card-button" type="button" data-action="video" data-id="' + escapeHtml(game.id) + '">查看视频</button>',
+      '<button class="card-button card-button--icon" type="button" data-action="download" data-id="' + escapeHtml(game.id) + '" title="下载资源" aria-label="下载资源"><span class="card-button__icon-image" aria-hidden="true"></span></button>',
       "</div>",
       "</div>",
       "</article>"
@@ -452,6 +482,14 @@
     return matched ? matched[1] : "";
   }
 
+  function getDownloadUrl(game) {
+    if (!game) {
+      return "";
+    }
+
+    return String(game.downloadUrl || "").trim();
+  }
+
   function getPlayableGames() {
     return state.games.filter(function (game) {
       return game.status === "playable" && Boolean(game.toyUrl);
@@ -464,10 +502,15 @@
         return {
           game: game,
           index: index,
+          pinned: Boolean(game.isPinned),
           timestamp: getReleaseTimestamp(game.releasedAt)
         };
       })
       .sort(function (left, right) {
+        if (left.pinned !== right.pinned) {
+          return left.pinned ? -1 : 1;
+        }
+
         if (right.timestamp !== left.timestamp) {
           return right.timestamp - left.timestamp;
         }
@@ -745,6 +788,23 @@
   function handleThemeToggle() {
     const nextTheme = state.theme === "light" ? "dark" : "light";
     setTheme(nextTheme);
+  }
+
+  function handleBackTopClick() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function syncBackTopButton() {
+    if (!elements.backTopButton) {
+      return;
+    }
+
+    const currentTop =
+      window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const isVisible = currentTop > BACK_TOP_THRESHOLD;
+
+    elements.backTopButton.classList.toggle("is-visible", isVisible);
+    elements.backTopButton.setAttribute("aria-hidden", isVisible ? "false" : "true");
   }
 
   function setTheme(theme) {
