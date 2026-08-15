@@ -503,12 +503,17 @@
           game: game,
           index: index,
           pinned: Boolean(game.isPinned),
+          pinOrder: getPinOrder(game.pinOrder),
           timestamp: getReleaseTimestamp(game.releasedAt)
         };
       })
       .sort(function (left, right) {
         if (left.pinned !== right.pinned) {
           return left.pinned ? -1 : 1;
+        }
+
+        if (left.pinned && right.pinned && left.pinOrder !== right.pinOrder) {
+          return left.pinOrder - right.pinOrder;
         }
 
         if (right.timestamp !== left.timestamp) {
@@ -534,6 +539,15 @@
     }
 
     return Date.UTC(Number(matched[1]), Number(matched[2]) - 1, Number(matched[3]));
+  }
+
+  function getPinOrder(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number) || number <= 0) {
+      return Number.POSITIVE_INFINITY;
+    }
+
+    return number;
   }
 
   function getFilteredGames() {

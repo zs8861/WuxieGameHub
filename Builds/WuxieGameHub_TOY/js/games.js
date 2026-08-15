@@ -1,10 +1,31 @@
 window.WUXIE_GAMES = [
   {
-    id: "16717271113728",
-    title: "我的世界整活版",
-    type: "沙盒整活",
+    id: "22081400091648",
+    title: "刀盾狗大冒险",
+    type: "沙盒模拟",
     status: "playable",
     statusText: "已上线",
+    releasedAt: "2026-08-15",
+    toyUrl: "https://www.bilibili.com/toy/ShieldDogAdventure/index.html",
+    videoUrl: "https://www.bilibili.com/video/BV1HBgA6gEfS/",
+    downloadUrl: "",
+    coverImage: "assets/刀盾狗大冒险.jpg",
+    description: "在这里你能砍树挖矿钓鱼种田修飞机，开局一条狗，要想富，先撸树！",
+    tags: ["沙盒", "模拟", "热梗"],
+    palette: {
+      primary: "#5d8ef2",
+      secondary: "#ffb84d",
+      glow: "rgba(93, 142, 242, 0.32)"
+    }
+  },
+  {
+    id: "16717271113728",
+    title: "我的世界整活版",
+    type: "沙盒模拟",
+    status: "playable",
+    statusText: "已上线",
+    isPinned: true,
+    pinOrder: 1,
     releasedAt: "2026-07-31",
     toyUrl: "https://www.bilibili.com/toy/MyCraft/index.html",
     videoUrl: "https://www.bilibili.com/video/BV12tGP6XE2s/",
@@ -45,6 +66,7 @@ window.WUXIE_GAMES = [
     status: "playable",
     statusText: "已上线",
     isPinned: true,
+    pinOrder: 2,
     releasedAt: "2026-07-11",
     toyUrl: "https://www.bilibili.com/toy/SilksongTextEdition/index.html",
     videoUrl: "https://www.bilibili.com/video/BV1gdLu6DEPZ/",
