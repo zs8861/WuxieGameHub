@@ -30,7 +30,7 @@ window.WUXIE_GAMES = [
     toyUrl: "https://www.bilibili.com/toy/MyCraft/index.html",
     videoUrl: "https://www.bilibili.com/video/BV12tGP6XE2s/",
     downloadUrl: "https://pan.quark.cn/s/9512a21e471b",
-    coverImage: "assets/我的世界整活版.png",
+    coverImage: "assets/我的世界整活版.webp",
     description: "围绕我的世界题材做的整活玩法，主打轻松解压和意料之外的互动效果。",
     tags: ["我的世界", "整活", "沙盒"],
     palette: {
@@ -318,7 +318,7 @@ window.WUXIE_GAMES = [
     toyUrl: "https://www.bilibili.com/toy/GoldMiner3D/index.html",
     videoUrl: "https://www.bilibili.com/video/BV1yF411Y71Z/",
     downloadUrl: "https://pan.quark.cn/s/baa5cd07e131",
-    coverImage: "assets/黄金矿工3D版.png",
+    coverImage: "assets/黄金矿工3D版.webp",
     description: "经典黄金矿工的3D版本，主打时机把控和目标取舍，适合短局反复游玩。",
     tags: ["3D", "抓取", "休闲"],
     palette: {
