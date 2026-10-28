@@ -1,5 +1,23 @@
 window.WUXIE_GAMES = [
   {
+    id: "league-gacha",
+    title: "英雄联盟抽卡模拟器",
+    type: "抽卡收集",
+    status: "playable",
+    statusText: "已上线",
+    releasedAt: "2026-10-28",
+    toyUrl: "https://www.bilibili.com/toy/LeagueGacha/index.html",
+    videoUrl: "https://www.bilibili.com/video/BV1BTn262EQd/",
+    coverImage: "assets/英雄联盟抽卡模拟器.webp",
+    description: "投掷海克斯骰子获得海克斯水晶，召唤英雄并收集符文之地珍藏。",
+    tags: ["英雄联盟", "抽卡", "收集"],
+    palette: {
+      primary: "#2865a6",
+      secondary: "#c59a4a",
+      glow: "rgba(74, 153, 224, 0.34)"
+    }
+  },
+  {
     id: "22081400091648",
     title: "刀盾狗大冒险",
     type: "沙盒模拟",

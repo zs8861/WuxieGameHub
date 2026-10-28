@@ -1,5 +1,9 @@
 # WuxieGameHub
 存放了秦无邪OvO所有自制游戏的Bilibili-TOY网页端（点击即玩）
+本站点部署在两个地方：
+https://www.aibitgames.com/
+和
+https://www.bilibili.com/toy/WuxieGameHub/index.html
 
 ## 发布脚本
 - 仅更新 `index.html` 里的资源版本号（自动使用当前 `git` 短哈希）：
